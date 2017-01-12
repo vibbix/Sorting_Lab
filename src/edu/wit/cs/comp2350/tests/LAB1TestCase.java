@@ -152,7 +152,7 @@ public class LAB1TestCase{
 
 	@Test
 	public void testRandCounting() {
-		testRand('r', 1000);
+		testRand('c', 1000);
 	}
 
 	@Test
