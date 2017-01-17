@@ -8,26 +8,75 @@ package edu.wit.cs.comp2350;
  * 
  */
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 public class LAB1 {
+    ;
+    public final static int MAX_INPUT = 524287;
+    public final static int MIN_INPUT = 0;
 
-	public final static int MAX_INPUT = 524287;
-	public final static int MIN_INPUT = 0;
+    /**
+     * A counting sort implementation
+     *
+     * @param a an array of integers
+     * @return a sorted array of integers
+     */
+    public static int[] countingSort(int[] a) {
 
-	// TODO: document this method
-	public static int[] countingSort(int[] a) {
-		//TODO: implement this method
-		return null;
-	}
+        int[] count = new int[MAX_INPUT];
+        for (int i = 0; i < a.length; i++) {
+            count[a[i]]++;
+        }
+        int[] sorted = new int[a.length];
+        int index = 0;
+        for (int i = 0; i < count.length; i++) {
+            if (count[i] > 0) {
+                for (int j = 0; j < count[i]; j++) {
+                    sorted[index] = i;
+                    index++;
+                }
+            }
+        }
+        return sorted;
+        //return null;
+    }
 
-	// TODO: document this method
-	public static int[] radixSort(int[] a) {
-		// TODO: implement this method
-		return null;
-	}
+    /**
+     * @param input The input to sort
+     * @param pos   the position to sort from
+     * @return a sorted array given the position
+     */
+    private static int[] stableCountingSort(int[] input, int pos) {
+        int[] rtn = new int[input.length];  //return array
+        int[] cnt = new int[10];            //the count array
+        for (int anInput : input) {
+            cnt[((anInput / pos) % 10)] += 1;
+        }
+        for (int i = 1; i < cnt.length; i++) {
+            cnt[i] += cnt[i - 1];
+        }
+        for (int i = input.length - 1; i >= 0; i--) {
+            int dig = ((input[i] / pos) % 10);
+            rtn[cnt[dig] - 1] = input[i];
+            cnt[dig]--;
+        }
+        return rtn;
+    }
+
+    /**
+     * sorts an array using radix sort
+     *
+     * @param a The int array to sort
+     * @return The sorted int array
+     */
+    public static int[] radixSort(int[] a) {
+        for (int pos = 1; pos <= MAX_INPUT; pos *= 10) {
+            a = stableCountingSort(a, pos);
+        }
+        return a;
+    }
 
 	/********************************************
 	 * 
